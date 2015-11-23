@@ -1,3 +1,4 @@
+#! /usr/bin/python
 import ethtool
 import socket
 import re
