@@ -13,6 +13,7 @@ hostname=socket.gethostname()
 #cpu stats
 cpu_count=multiprocessing.cpu_count()
 print "%s.cpu.count %d %d" % (hostname,cpu_count, now)
+print "%s.cpu.usage %f %d" % (hostname,psutil.cpu_percent(), now)
 
 #uptime stats
 with open('/proc/uptime', 'r') as f:
@@ -39,17 +40,6 @@ print "%s.process.total %d %d" % (hostname,len(proc_stats), now)
 print "%s.process.running %d %d" % (hostname,proc_dict['running'], now)
 print "%s.process.sleeping %d %d" % (hostname,proc_dict['sleeping'], now)
 print "%s.process.stopped %d %d" % (hostname,proc_dict['stopped'], now)
-
-user_cpu_stats = collections.defaultdict(float)
-user_mem_stats = collections.defaultdict(float)
-for process in proc_stats:
-	user_cpu_stats[process.username] += process.get_cpu_percent(interval=None)
-	user_mem_stats[process.username] += process.get_memory_percent()
-
-for key in user_cpu_stats:
-	print "%s.cpu.user.%s %f %d" % (hostname,key,user_cpu_stats[key], now)
-for key in user_mem_stats:
-	print "%s.memory.user.%s %f %d" % (hostname,key,user_mem_stats[key], now)
 
 
 #disk stats
