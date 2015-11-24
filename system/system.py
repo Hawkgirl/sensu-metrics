@@ -18,9 +18,9 @@ print "%s.cpu.count %d %d" % (hostname,cpu_count, now)
 with open('/proc/loadavg', 'r') as f:
     one, five, fifteen = f.readline().split()[:3]
 
-print "%s.load_avg.one %f %d" % (hostname,float(one), now)
-print "%s.load_avg.five %f %d" % (hostname,float(five), now)
-print "%s.load_avg.fifteen %f %d" % (hostname,float(fifteen), now)
+print "%s.cpu.load_avg.one %f %d" % (hostname,float(one), now)
+print "%s.cpu.load_avg.five %f %d" % (hostname,float(five), now)
+print "%s.cpu.load_avg.fifteen %f %d" % (hostname,float(fifteen), now)
 
 #uptime stats
 with open('/proc/uptime', 'r') as f:
@@ -28,8 +28,8 @@ with open('/proc/uptime', 'r') as f:
 
 idle_seconds = float(idle_seconds)/cpu_count
 
-print "%s.uptime %f %d" % (hostname,float(uptime_seconds), now)
-print "%s.idletime %f %d" % (hostname,idle_seconds, now)
+print "%s.cpu.uptime %f %d" % (hostname,float(uptime_seconds), now)
+print "%s.cpu.idletime %f %d" % (hostname,idle_seconds, now)
 
 #memory stats
 mem_stats =psutil.virtual_memory()
