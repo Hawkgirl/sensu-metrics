@@ -13,7 +13,14 @@ hostname=socket.gethostname()
 #cpu stats
 cpu_count=multiprocessing.cpu_count()
 print "%s.cpu.count %d %d" % (hostname,cpu_count, now)
-print "%s.cpu.usage %f %d" % (hostname,psutil.cpu_percent(), now)
+
+#load avg
+with open('/proc/loadavg', 'r') as f:
+    one, five, fifteen = f.readline().split()[:3]
+
+print "%s.load_avg.one %f %d" % (hostname,float(one), now)
+print "%s.load_avg.five %f %d" % (hostname,float(five), now)
+print "%s.load_avg.fifteen %f %d" % (hostname,float(fifteen), now)
 
 #uptime stats
 with open('/proc/uptime', 'r') as f:
