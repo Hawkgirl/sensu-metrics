@@ -11,7 +11,17 @@ now = time.time()
 hostname=socket.gethostname()
 
 #cpu stats
-print "%s.cpu.count %d %d" % (hostname,multiprocessing.cpu_count(), now)
+cpu_count=multiprocessing.cpu_count()
+print "%s.cpu.count %d %d" % (hostname,cpu_count, now)
+
+#uptime stats
+with open('/proc/uptime', 'r') as f:
+    uptime_seconds, idle_seconds = f.readline().split()
+
+idle_seconds = float(idle_seconds)/cpu_count
+
+print "%s.uptime %f %d" % (hostname,float(uptime_seconds), now)
+print "%s.idletime %f %d" % (hostname,idle_seconds, now)
 
 #memory stats
 mem_stats =psutil.virtual_memory()
