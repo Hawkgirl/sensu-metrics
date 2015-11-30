@@ -4,7 +4,7 @@ import socket
 import re
 import time
 
-SKIP_DRIVERS = ('tun', 'openvswitch', 'bridge', 'veth')
+SKIP_DRIVERS = ('tun', 'openvswitch', 'bridge', 'veth', 'vxlan')
 host_name = socket.gethostname()
 time_now = int(time.time())
 f = open("/proc/net/dev", "r");
@@ -14,6 +14,7 @@ f.close()
 r = re.compile("[:\s]+")
  
 lines = re.split("[\r\n]+", data)
+active_devices = ethtool.get_active_devices()
 for line in lines[2:]:
 	columns = r.split(line.lstrip())
 
@@ -28,6 +29,9 @@ for line in lines[2:]:
 
 	if driver in SKIP_DRIVERS:
 		continue	
+
+	if iface_name not in active_devices:
+		continue
 
 
  	print '{}\t{}\t{}'.format(host_name + '.interface.' + iface_name + '.rx_bytes', columns[1], time_now)
