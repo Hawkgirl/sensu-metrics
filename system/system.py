@@ -40,8 +40,8 @@ print "%s.memory.cached %d %d" % (hostname,mem_stats.cached, now)
 
 
 #process stats
-proc_stats = psutil.get_process_list()
-proc_dict=collections.defaultdict(int, toolz.countby(lambda x:x.status, proc_stats))
+proc_stats = list(psutil.process_iter())
+proc_dict=collections.defaultdict(int, toolz.countby(lambda x:x.status(), proc_stats))
 
 print "%s.process.total %d %d" % (hostname,len(proc_stats), now)
 print "%s.process.running %d %d" % (hostname,proc_dict['running'], now)
@@ -52,5 +52,9 @@ print "%s.process.stopped %d %d" % (hostname,proc_dict['stopped'], now)
 #disk stats
 disk_stats = psutil.disk_io_counters(perdisk=True)
 for key in disk_stats:
+	#skip ram disks
+	if key[:3] == 'ram': continue
+	# skip cdrom devices
+	if key[:2] == 'sr': continue
 	print "%s.disk.%s.reads %d %d" % (hostname,key,disk_stats[key].read_count, now)
 	print "%s.disk.%s.writes %d %d" % (hostname,key,disk_stats[key].write_count, now)
