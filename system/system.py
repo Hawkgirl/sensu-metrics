@@ -58,3 +58,22 @@ for key in disk_stats:
 	if key[:2] == 'sr': continue
 	print "%s.disk.%s.reads %d %d" % (hostname,key,disk_stats[key].read_count, now)
 	print "%s.disk.%s.writes %d %d" % (hostname,key,disk_stats[key].write_count, now)
+
+disk_partitions = psutil.disk_partitions()
+for partition in disk_partitions:
+	last_index = partition.device.rfind('/')
+	dev_name = partition.device[last_index+1:]
+	partition_usage = psutil.disk_usage(partition.mountpoint)
+	print "%s.disk.%s.used %d %d" % (hostname, dev_name, partition_usage.used, now)
+	print "%s.disk.%s.avail %d %d" % (hostname, dev_name, partition_usage.free, now)
+	print "%s.disk.%s.capacity %d %d" % (hostname, dev_name, partition_usage.percent, now)
+
+#network stats
+
+
+connections = psutil.net_connections()
+dic =  toolz.countby(lambda x: x.status, connections)
+for item in dic:
+	if item == 'NONE':
+		continue
+	print "%s.tcp.%s %d %d" % (hostname, item, dic[item], now)
