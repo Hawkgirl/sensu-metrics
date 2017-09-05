@@ -66,7 +66,7 @@ for partition in disk_partitions:
 	partition_usage = psutil.disk_usage(partition.mountpoint)
 	print "%s.disk.%s.used %d %d" % (hostname, dev_name, partition_usage.used, now)
 	print "%s.disk.%s.avail %d %d" % (hostname, dev_name, partition_usage.free, now)
-	print "%s.disk.%s.capacity %d %d" % (hostname, dev_name, partition_usage.percent, now)
+	print "%s.disk.%s.used_percent %d %d" % (hostname, dev_name, partition_usage.percent, now)
 
 #network stats
 
