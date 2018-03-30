@@ -21,6 +21,7 @@ with open('/proc/loadavg', 'r') as f:
 print "%s.cpu.load_avg.one %f %d" % (hostname,float(one), now)
 print "%s.cpu.load_avg.five %f %d" % (hostname,float(five), now)
 print "%s.cpu.load_avg.fifteen %f %d" % (hostname,float(fifteen), now)
+print "%s.cpu.load_percentage %f %d" % (hostname,float(fifteen)/cpu_count*100, now)
 
 #uptime stats
 with open('/proc/uptime', 'r') as f:
